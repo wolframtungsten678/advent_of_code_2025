@@ -28,5 +28,4 @@ while row < len(tachyon_manifold):
         column += 1
     row += 1
 
-print(split_count)
-print(tachyon_manifold)
+print("Beam Split Count: " + str(split_count))

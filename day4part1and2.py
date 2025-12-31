@@ -13,11 +13,12 @@ for row in pallet_raw:
     row_1 = row_1.replace("@", "1")
     pallet.append(row_1)
 
+# Calculate number of rolls initially in grid
 initial_rolls = 0
 for row in pallet: 
     initial_rolls += row.count("1")
 
-# Value retrieval functions
+# Value retrieval and roll removal functions
 def fetch_TLD(pallet, row, column):
     return int(pallet[row - 1][column - 1])
 
@@ -44,10 +45,11 @@ def fetch_BRD(pallet, row, column):
 
 def remove_rolls(pallet, grid_remove):
     for row, column in grid_remove:
-        pallet[row] = pallet[row][:column] + "0" + pallet[0][(column+1):]
+        pallet[row] = pallet[row][:column] + "0" + pallet[row][(column+1):]
     return None
 
 # Begin interative checking if rolls can be removed
+k = 0 # Enables printing of original number of rolls accessible for removal and not afterwards
 while (grid_state == True): 
     grid_remove = []
 
@@ -59,7 +61,6 @@ while (grid_state == True):
             # Skip slot if empty and increment to next slot
             if (pallet[i][j] == "0"):
                 j += 1
-                continue 
             else: 
                 match i:
                     case 0:
@@ -89,11 +90,15 @@ while (grid_state == True):
                 
                 if (adjacent_total < 4):
                     counter += 1
-                    grid_remove.append((i,j))
+                    grid_remove.append([i,j])
                 
                 j += 1
         i += 1
 
+    while k < 1: 
+        print("Rolls of Paper Accessible in Original Grid: " + str(counter))
+        k += 1
+    
     # check if any rolls can be removed, and if so, remove them
     if (len(grid_remove) == 0):
         grid_state = False
@@ -106,4 +111,4 @@ final_rolls = 0
 for row in pallet: 
     final_rolls += row.count("1")
 
-print(initial_rolls - final_rolls)
+print("Total Number of Rolls Removed: " + str(initial_rolls - final_rolls))

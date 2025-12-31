@@ -55,4 +55,4 @@ while k < len(parsed_cephalopod_math[0]):
     total += subtotal
     k += 1
 
-print(total)
+print("Total :" + str(total))

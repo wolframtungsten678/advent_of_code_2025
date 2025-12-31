@@ -25,4 +25,4 @@ while i < len(raw_cephalopod_math[0]):
 
     i += 1
 
-print(total)
+print("Total :" + str(total))

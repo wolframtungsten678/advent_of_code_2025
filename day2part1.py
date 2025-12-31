@@ -1,16 +1,6 @@
 import csv
 import builtins
 
-def pattern_check(string) -> int:
-    string_length = len(string)
-    for i in builtins.range(1, string_length):
-        test_string = string[:i]
-        if test_string * (len(string) // len(test_string)) == string:
-            print(string)
-            return 1
-    return 0
-
-
 raw_data = []
 
 with open("day2input.txt", "r") as file: 
@@ -32,12 +22,13 @@ for element in barcode_ranges:
     temp_array = []
 
     while range_start <= range_end:
-        temp_array.append(range_start)
+        temp_array.append(str(range_start))
         range_start += 1
 
     for number in temp_array: 
-        number_string = str(number)
-        multiplier = pattern_check(number_string)
-        counter += number * multiplier
+        if ((len(number)%2) == 0):
+            number_half = len(number)// 2
+            if number[:number_half] == number[number_half:]:
+                counter += int(number)
 
-print(counter)
+print("Invalid ID's: " + str(counter))

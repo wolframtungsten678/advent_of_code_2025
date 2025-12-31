@@ -22,4 +22,4 @@ for ingredient in ingredient_list:
             counter += 1
             break
 
-print(counter)
+print("Fresh Ingredient ID's: " + str(counter))

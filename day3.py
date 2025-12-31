@@ -13,4 +13,4 @@ for bank in battery_banks:
     joltage = digit_1 + digit_2
     total_joltage += int(joltage)
 
-print(total_joltage)
+print("Total Joltage: " + str(total_joltage))
