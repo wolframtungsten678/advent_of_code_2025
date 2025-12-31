@@ -1,3 +1,22 @@
-## 2025 Advent of Code
+# 2025 Advent of Code
 
+## What is this?
 These are my personal solutions for the [2025 advent of code challenge](https://adventofcode.com/2025) in Python. 
+
+Solutions are currently available for: 
+- Day 1 part 1
+- Day 2 part 1 and 2
+- Day 3 part 1 and 2
+- Day 4 part 1
+- Day 5 part 1
+- Day 6 part 1 and 2
+- Day 7 part 1
+- Day 8 part 1
+
+## How to Install Dependencies
+- Create a Python virtual environment 
+`python -m venv .venv`   
+- Activate the environment 
+`source .venv/bin/activate`
+- Install dependencies from requirements.txt file 
+`pip install -r requirements.txt`
