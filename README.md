@@ -4,7 +4,7 @@
 These are my personal solutions for the [2025 advent of code challenge](https://adventofcode.com/2025) in Python. 
 
 Solutions are currently available for: 
-- Day 1 part 1
+- Day 1 part 1 and 2
 - Day 2 part 1 and 2
 - Day 3 part 1 and 2
 - Day 4 part 1

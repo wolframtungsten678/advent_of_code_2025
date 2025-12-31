@@ -43,7 +43,8 @@ point_2 = distances[sorted_distance_indices[0]][2]
 circuits.append([point_1, point_2])
 
 k = 1
-while k < 1000: 
+one_circuit = -1
+while k < len(sorted_distance_indices): 
     distance_index = sorted_distance_indices[k]
     point_1_index = distances[distance_index][1]
     point_2_index = distances[distance_index][2]
@@ -80,22 +81,18 @@ while k < 1000:
     else: 
         circuits.append([point_1_index, point_2_index])
 
+    if len(circuits[0]) == len(junction_boxes): 
+        one_circuit = k
+        break
+    
     k += 1
 
-# Find 3 largest circuits
-circuits_sizes = []
-for circuit in circuits:
-    circuits_sizes.append(len(circuit))
+# Find points added when one giant circuit is created
+final_point_one_index = distances[one_circuit][1]
+final_point_two_index = distances[one_circuit][2]
 
-sorted_circuits_sizes = []
-sorted_circuits_sizes = np.argsort(circuits_sizes)
+x_coords = int(junction_boxes[final_point_one_index][0]) * int(junction_boxes[final_point_two_index][0])
 
-max_index = len(sorted_circuits_sizes) - 1
-
-circuit_1_index = sorted_circuits_sizes[max_index]
-circuit_2_index = sorted_circuits_sizes[max_index - 1]
-circuit_3_index = sorted_circuits_sizes[max_index - 2]
-
-total = circuits_sizes[circuit_1_index] * circuits_sizes[circuit_2_index] * circuits_sizes[circuit_3_index]
+print("X Coordinates Multiplied: " + str(x_coords))
 
 gc.collect()
