@@ -98,4 +98,6 @@ circuit_3_index = sorted_circuits_sizes[max_index - 2]
 
 total = circuits_sizes[circuit_1_index] * circuits_sizes[circuit_2_index] * circuits_sizes[circuit_3_index]
 
+print("Product of Three Largest Circuits: " + str(total))
+
 gc.collect()

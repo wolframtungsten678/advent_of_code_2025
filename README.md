@@ -1,4 +1,4 @@
-# 2025 Advent of Code
+# 2025 Advent of Code (WIP)
 
 ## What is this?
 These are my personal solutions for the [2025 Advent of Code challenge](https://adventofcode.com/2025), written in Python. 
@@ -12,6 +12,8 @@ Solutions are currently available for:
 - Day 6 part 1 and 2
 - Day 7 part 1
 - Day 8 part 1
+- Day 9 part 1
+- Day 10 part 1
 
 ## To Run
 `python3 {filename}`
