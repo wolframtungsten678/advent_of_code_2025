@@ -11,7 +11,7 @@ Solutions are currently available for:
 - Day 5 part 1 and 2
 - Day 6 part 1 and 2
 - Day 7 part 1
-- Day 8 part 1
+- Day 8 part 1 and 2
 - Day 9 part 1
 - Day 10 part 1
 - Day 11 part 1
