@@ -76,20 +76,21 @@ while k < len(sorted_distance_indices):
     elif found_1 and found_2: 
         if point_1_circuit != point_2_circuit: 
             circuit_to_move = circuits[point_2_circuit]
-            circuits[point_1_circuit].extend(circuits[point_2_circuit])
+            circuits[point_1_circuit].extend(circuit_to_move)
             del circuits[point_2_circuit]
     else: 
         circuits.append([point_1_index, point_2_index])
 
-    if len(circuits[0]) == len(junction_boxes): 
+    if len(circuits) == 1 and len(circuits[0]) == len(junction_boxes): 
         one_circuit = k
         break
     
     k += 1
 
 # Find points added when one giant circuit is created
-final_point_one_index = distances[one_circuit][1]
-final_point_two_index = distances[one_circuit][2]
+distance_index = sorted_distance_indices[one_circuit]
+final_point_one_index = distances[distance_index][1]
+final_point_two_index = distances[distance_index][2]
 
 x_coords = int(junction_boxes[final_point_one_index][0]) * int(junction_boxes[final_point_two_index][0])
 

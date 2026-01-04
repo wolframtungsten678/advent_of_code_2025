@@ -96,8 +96,8 @@ while len(nodes) > 0:
     current_node = nodes[-1]
     check = current_node.node_check()
     if check == "None":
-        #current_node.p1_visited = False
-        #current_node.p2_visited = False
+        current_node.p1_visited = False
+        current_node.p2_visited = False
         nodes.pop()
         continue
     elif (check == "p1") or (check == "Both"):
@@ -109,9 +109,7 @@ while len(nodes) > 0:
         nodes[-1].p2_visited = True
         if not find_next(current_node, current_node.p2, nodes, node_list):
             timelines += 1
+            print("Current Timelines: " + str(timelines))
             continue
-    
-
-
-
-print(timelines)  
+  
+print("Total timelines: " + str(timelines))
