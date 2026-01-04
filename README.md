@@ -14,6 +14,8 @@ Solutions are currently available for:
 - Day 8 part 1
 - Day 9 part 1
 - Day 10 part 1
+- Day 11 part 1
+- Day 12 part 1
 
 ## To Run
 `python3 {filename}`

@@ -1,7 +1,7 @@
 import itertools
 
 machines = []
-total_presses = 0
+light_total_presses = 0
 
 class Machine: 
     def __init__(self, lights, buttons, joltage):
@@ -37,14 +37,14 @@ with open('day10input.txt', 'r') as file:
             buttons.append(button)
             b += 1
 
-        new_machine = Machine(light_indicator, buttons, joltage)
+        new_machine = Machine(light_indicator, buttons, joltage_array)
         machines.append(new_machine)
 
 
 for machine in machines: 
     lights_length = len(machine.lights)
     
-    # Array to compare button presses with
+    # Light indicator array to compare button presses with
     target_lights = []
     for character in machine.lights:
         target_lights.append(int(character))
@@ -55,10 +55,10 @@ for machine in machines:
         button_array.append(button_conversion(button, lights_length))
     
     # Simulate button presses, with increasing number of total presses 
-    # until a solution is found
+    # until a solution is found for the light indicator
     presses = 1    
-    solution_found = False
-    while not solution_found: 
+    light_solution_found = False
+    while (light_solution_found == False): 
         # Find groups of buttons to press
         num_buttons = []
         i = 0
@@ -69,20 +69,20 @@ for machine in machines:
         
         for pair in groups:
             j = 1 # Number of buttons in combo
-            button_combo = button_array[pair[0]].copy()
+            light_button_combo = button_array[pair[0]].copy()
             while j < len(pair):
-                l = 0 # Light indicator index
+                l = 0 # Light & joltage indicator index
                 while l < lights_length:
-                    button_combo[l] = (button_combo[l] + button_array[pair[j]][l]) % 2 
+                    light_button_combo[l] = (light_button_combo[l] + button_array[pair[j]][l]) % 2 
                     l += 1
                 j += 1
 
             # Compare with target light indicator
-            if target_lights == button_combo:
-                total_presses += len(pair)
-                solution_found = True
-                break      
+            if (target_lights == light_button_combo) and not light_solution_found:
+                light_total_presses += len(pair)
+                light_solution_found = True
+                break
 
         presses += 1
 
-print("Minimum Button Presses: " + str(total_presses))
+print("Minimum Button Presses (Light Indicator): " + str(light_total_presses))

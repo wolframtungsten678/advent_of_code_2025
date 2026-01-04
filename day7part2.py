@@ -8,6 +8,16 @@ with open('day7input.txt', 'r') as file:
 
 total_rows = len(tachyon_manifold)
 total_columns = len(tachyon_manifold[0])
+tachyon_manifold = []
+nodes = []
+timelines = 0
+
+with open('day7input.txt', 'r') as file: 
+    for row in file: 
+        tachyon_manifold.append(row.strip())
+
+total_rows = len(tachyon_manifold)
+total_columns = len(tachyon_manifold[0])
 
 # Node Class
 class Node:
@@ -16,14 +26,8 @@ class Node:
         self.column = column
         self.p1 = column - 1
         self.p2 = column + 1
-    p1_visited = False
-    p2_visited = False
-
-    def visit_p1(self):
-        self.p1_visited = True
-
-    def visit_p2(self):
-        self.p2_visited = True
+        self.p1_visited = False
+        self.p2_visited = False
     
     # Function to check if node can be popped from stack
     def node_check(self):
@@ -42,20 +46,30 @@ class Node:
         print("[" + str(self.row) + " , " + str(self.column) + "], " + str(self.p1_visited) + ", " + str(self.p2_visited))
 
 
-# Function to find next node
-def find_next(node, path):
+# Function to find next node and append to nodes array. Returns whether node was appended
+def find_next(node, path, array, node_list):
     row = node.row
+    column = path
     node_added = False
-    while row < total_rows - 1:
-        next_row = row + 1
-        if tachyon_manifold[next_row][path] == "^":
-            new_node = Node(row, path)
-            nodes.append(new_node)
-            node_added = True
-            break
-        row += 1
+    next_node = next((x for x in node_list if (x[0] > row and x[1] == column)), None)
+    if next_node != None:
+        node_added = True
+        new_node = Node(next_node[0], next_node[1])
+        array.append(new_node)
     
     return node_added
+
+# Create array of all nodes 
+node_list = []
+i = 0
+while i < total_columns:
+    j = 0
+    while j < total_rows:
+        current_symbol = tachyon_manifold[j][i]
+        if current_symbol == "^":
+            node_list.append([j,i])
+        j += 1
+    i += 1
 
 # Identify column to begin search
 beam_start_column = -1
@@ -79,17 +93,25 @@ while row < total_rows:
     row += 1
 
 while len(nodes) > 0: 
-    check = nodes[-1].node_check()
+    current_node = nodes[-1]
+    check = current_node.node_check()
     if check == "None":
+        #current_node.p1_visited = False
+        #current_node.p2_visited = False
         nodes.pop()
+        continue
+    elif (check == "p1") or (check == "Both"):
+        nodes[-1].p1_visited = True
+        if not find_next(current_node, current_node.p1, nodes, node_list): 
+            timelines += 1
+            continue
     elif check == "p2":
-        nodes[-1].visit_p2()
-        if not find_next(nodes[-1], nodes[-1].p2):
+        nodes[-1].p2_visited = True
+        if not find_next(current_node, current_node.p2, nodes, node_list):
             timelines += 1
-    elif check == "p1" or "Both":
-        nodes[-1].visit_p1()
-        if not find_next(nodes[-1], nodes[-1].p1): 
-            timelines += 1
-    nodes[-1].print_node()
+            continue
+    
 
-print(timelines)    
+
+
+print(timelines)  
