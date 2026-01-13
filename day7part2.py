@@ -1,3 +1,8 @@
+# THIS IS A WIP - OPTIMIZATION FOR SPEED IS NEEDED
+
+from collections import defaultdict
+from bisect import bisect_right
+
 tachyon_manifold = []
 nodes = []
 timelines = 0
@@ -8,108 +13,64 @@ with open('day7input.txt', 'r') as file:
 
 total_rows = len(tachyon_manifold)
 total_columns = len(tachyon_manifold[0])
-tachyon_manifold = []
-nodes = []
-timelines = 0
 
-with open('day7input.txt', 'r') as file: 
-    for row in file: 
-        tachyon_manifold.append(row.strip())
-
-total_rows = len(tachyon_manifold)
-total_columns = len(tachyon_manifold[0])
-
-# Node Class
-class Node:
-    def __init__(self, row, column):
-        self.row = row
-        self.column = column
-        self.p1 = column - 1
-        self.p2 = column + 1
-        self.p1_visited = False
-        self.p2_visited = False
-    
-    # Function to check if node can be popped from stack
-    def node_check(self):
-        if self.p1_visited and self.p2_visited: 
-            value = "None"
-        elif self.p1_visited and not self.p2_visited: 
-            value = "p2"
-        elif self.p2_visited and not self.p1_visited: 
-            value = "p1"
-        elif not self.p1_visited and not self.p2_visited: 
-            value = "Both"
-        
-        return value
-    
-    def print_node(self):
-        print("[" + str(self.row) + " , " + str(self.column) + "], " + str(self.p1_visited) + ", " + str(self.p2_visited))
-
-
-# Function to find next node and append to nodes array. Returns whether node was appended
-def find_next(node, path, array, node_list):
-    row = node.row
-    column = path
-    node_added = False
-    next_node = next((x for x in node_list if (x[0] > row and x[1] == column)), None)
-    if next_node != None:
-        node_added = True
-        new_node = Node(next_node[0], next_node[1])
-        array.append(new_node)
-    
-    return node_added
-
-# Create array of all nodes 
-node_list = []
-i = 0
-while i < total_columns:
-    j = 0
-    while j < total_rows:
-        current_symbol = tachyon_manifold[j][i]
+# Create dictionary of all nodes and identify column to begin search
+all_nodes = defaultdict(list)
+for row in range(total_rows):
+    for col in range(total_columns):
+        current_symbol = tachyon_manifold[row][col]
         if current_symbol == "^":
-            node_list.append([j,i])
-        j += 1
-    i += 1
+            all_nodes[col].append(row)
+        elif current_symbol == "S":
+            beam_start_column = col
 
-# Identify column to begin search
-beam_start_column = -1
-row = 0
-while row < total_rows:
-    column = 0
-    while beam_start_column == -1:
-        current_symbol = tachyon_manifold[row][column]
-        if current_symbol == "S":
-            beam_start_column = column
-        column += 1
-    row += 1
+# Sort nodes in each column by increasing row 
+for col in all_nodes:
+    all_nodes[col].sort()
 
 #Identify first node
-row = 0
-while row < total_rows:
-    if tachyon_manifold[row][beam_start_column] == "^":
-        node_1 = Node(row, beam_start_column)
-        nodes.append(node_1)
-        break
-    row += 1
+first_node_row = None
+for row in all_nodes[beam_start_column]:
+    first_node_row = row
+    node_1 = [row, beam_start_column, False, False] # Node format is [row, column, left, right]
+    nodes.append(node_1)
+    break
 
+# Find next node in path and add to stack until end of tachyon_manifold is reached, then step backwards 
+# to find additional paths 
 while len(nodes) > 0: 
+    if timelines % 1000000 == 0:
+        print(timelines)
     current_node = nodes[-1]
-    check = current_node.node_check()
-    if check == "None":
-        current_node.p1_visited = False
-        current_node.p2_visited = False
+    if nodes[-1][2] == True and nodes[-1][3] == True:
         nodes.pop()
         continue
-    elif (check == "p1") or (check == "Both"):
-        nodes[-1].p1_visited = True
-        if not find_next(current_node, current_node.p1, nodes, node_list): 
+    elif current_node[2] == False:
+        nodes[-1][2] = True
+        search_column = current_node[1] - 1
+        rows = all_nodes.get(search_column, False)
+        if rows == False:
             timelines += 1
             continue
-    elif check == "p2":
-        nodes[-1].p2_visited = True
-        if not find_next(current_node, current_node.p2, nodes, node_list):
+        next_node_index = bisect_right(rows, current_node[0])
+        if next_node_index < len(rows):
+            nodes.append([rows[next_node_index], search_column, False, False])
+        else: 
             timelines += 1
-            print("Current Timelines: " + str(timelines))
             continue
+    elif current_node[3] == False:
+        nodes[-1][3] = True
+        search_column = current_node[1] + 1
+        rows = all_nodes.get(search_column, False)
+        if rows == False:
+            timelines += 1
+            continue
+        next_node_index = bisect_right(rows, current_node[0])
+        if next_node_index < len(rows):
+            nodes.append([rows[next_node_index], search_column, False, False])
+        else: 
+            timelines += 1
+            continue
+    
   
 print("Total timelines: " + str(timelines))
