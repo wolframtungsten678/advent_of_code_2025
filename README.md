@@ -1,7 +1,7 @@
 # 2025 Advent of Code (WIP)
 
 ## What is this?
-These are my personal solutions for the [2025 Advent of Code challenge](https://adventofcode.com/2025), written in Python.
+These are my personal solutions for the [2025 Advent of Code challenge](https://adventofcode.com/2025), written in Python. Problem statements can be found at the bottom of each solution for convenience. 
 
 Solutions are currently available for: 
 - Day 1 part 1 and 2
